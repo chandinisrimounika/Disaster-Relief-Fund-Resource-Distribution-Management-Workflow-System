@@ -1,0 +1,48 @@
+package com.example.Disaster_Relief.model;
+
+import com.example.Disaster_Relief.enums.PaymentStatus;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "donations")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Donation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "donor_id", nullable = false)
+    private User donor;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private DisasterEvent disasterEvent;
+
+    @Column(nullable = false)
+    private Double donationAmount;
+
+    private LocalDateTime donationDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus paymentStatus;
+
+    private String referenceId;
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (donationDate == null) {
+            donationDate = LocalDateTime.now();
+        }
+    }
+}
