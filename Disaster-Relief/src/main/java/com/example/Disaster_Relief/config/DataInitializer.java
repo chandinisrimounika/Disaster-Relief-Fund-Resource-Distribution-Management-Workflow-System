@@ -9,6 +9,7 @@ import com.example.Disaster_Relief.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DataInitializer implements CommandLineRunner {
@@ -19,13 +20,17 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private ResourceItemRepository resourceItemRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.count() == 0) {
-            userRepository.save(new User(null, "Admin User", "admin@relief.com", "1234567890", Role.ADMIN, null));
-            userRepository.save(new User(null, "Donor User", "donor@test.com", "0987654321", Role.DONOR, null));
-            userRepository.save(new User(null, "Coordinator User", "coord@relief.com", "1122334455", Role.RELIEF_COORDINATOR, null));
-            userRepository.save(new User(null, "Officer User", "officer@relief.com", "5544332211", Role.FIELD_OFFICER, null));
+            String password = "password123";
+            userRepository.save(new User(null, "Admin User", "admin@relief.com", password, "1234567890", Role.ADMIN, null));
+            userRepository.save(new User(null, "Donor User", "donor@test.com", password, "0987654321", Role.DONOR, null));
+            userRepository.save(new User(null, "Coordinator User", "coord@relief.com", password, "1122334455", Role.RELIEF_COORDINATOR, null));
+            userRepository.save(new User(null, "Officer User", "officer@relief.com", password, "5544332211", Role.FIELD_OFFICER, null));
         }
 
         if (resourceItemRepository.count() == 0) {

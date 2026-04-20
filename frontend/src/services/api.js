@@ -7,6 +7,24 @@ const api = axios.create({
   },
 });
 
+// Add a request interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export const AuthAPI = {
+  login: (data) => api.post('/auth/login', data),
+};
+
 export const UserAPI = {
   getAll: (role) => api.get('/users', { params: { role } }),
   create: (data) => api.post('/users', data),

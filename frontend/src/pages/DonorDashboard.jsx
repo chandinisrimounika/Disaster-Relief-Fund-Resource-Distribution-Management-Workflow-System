@@ -65,7 +65,7 @@ const DonorDashboard = () => {
                 <div className="badge-row">
                   <span className="type-badge">{event.eventType}</span>
                 </div>
-                <button className="btn-primary donate-btn" onClick={() => setSelectedEvent(event)}>
+                <button className="btn btn-primary donate-btn" onClick={() => setSelectedEvent(event)}>
                   Contribute Now
                 </button>
               </motion.div>
@@ -114,8 +114,8 @@ const DonorDashboard = () => {
                   </div>
                 </div>
                 <div className="form-actions">
-                  <button type="button" className="btn-secondary" onClick={() => setSelectedEvent(null)}>Cancel</button>
-                  <button type="submit" className="btn-primary">Confirm Donation</button>
+                  <button type="button" className="btn btn-ghost" onClick={() => setSelectedEvent(null)}>Cancel</button>
+                  <button type="submit" className="btn btn-primary">Confirm Donation</button>
                 </div>
               </form>
             </motion.div>
@@ -131,7 +131,7 @@ const DonorDashboard = () => {
         .event-mini-card h3 { font-size: 18px; margin: 0; }
         .location { color: var(--text-secondary); font-size: 14px; margin: 0; }
         .type-badge { font-size: 11px; background: rgba(56, 189, 248, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-weight: 600; }
-        .donate-btn { margin-top: 8px; width: 100%; }
+        .donate-btn { margin-top: 8px; }
         .amount-td { font-weight: 700; color: var(--success); }
         .date-td { font-size: 13px; color: var(--text-secondary); }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
