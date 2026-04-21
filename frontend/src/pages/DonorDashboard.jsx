@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { EventAPI, DonationAPI } from '../services/api';
 import { useUser } from '../context/UserContext';
+import { useToast } from '../context/ToastContext';
 import { Heart, History, TrendingUp, DollarSign } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DonorDashboard = () => {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [activeEvents, setActiveEvents] = useState([]);
   const [history, setHistory] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -38,9 +40,9 @@ const DonorDashboard = () => {
       setSelectedEvent(null);
       setAmount('');
       fetchData();
-      alert("Thank you for your contribution!");
+      showToast("Thank you for your contribution!", "success");
     } catch (err) {
-      alert(err.response?.data?.error || "Donation failed");
+      showToast(err.response?.data?.error || "Donation failed", "error");
     }
   };
 

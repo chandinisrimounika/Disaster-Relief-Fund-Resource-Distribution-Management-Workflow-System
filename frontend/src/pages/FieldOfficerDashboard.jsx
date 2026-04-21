@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { EventAPI, ResourceAPI, DistributionAPI } from '../services/api';
 import { useUser } from '../context/UserContext';
+import { useToast } from '../context/ToastContext';
 import { Truck, Send, ClipboardList, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const FieldOfficerDashboard = () => {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [events, setEvents] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [distributions, setDistributions] = useState([]);
@@ -44,9 +46,9 @@ const FieldOfficerDashboard = () => {
       });
       setFormData({ eventId: '', resourceItemId: '', distributedQuantity: '' });
       fetchData();
-      alert("Distribution successful!");
+      showToast("Distribution successful!", "success");
     } catch (err) {
-      alert(err.response?.data?.error || "Distribution failed");
+      showToast(err.response?.data?.error || "Distribution failed", "error");
     }
   };
 

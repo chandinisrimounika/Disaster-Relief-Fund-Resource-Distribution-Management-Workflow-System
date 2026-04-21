@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import { useToast } from '../context/ToastContext';
 import { UserAPI, AuthAPI } from '../services/api';
 import { LogIn, User as UserIcon, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -10,6 +11,7 @@ const Login = () => {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [password, setPassword] = useState('password123'); // Default for demo
   const { login } = useUser();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,9 +40,10 @@ const Login = () => {
         role: res.data.role
       };
       login(userData, res.data.jwt);
+      showToast(`Welcome back, ${res.data.name}!`, "success");
       navigate(`/${res.data.role.toLowerCase()}-dashboard`);
     } catch (err) {
-      alert("Login failed: " + (err.response?.data?.error || "Invalid credentials"));
+      showToast("Login failed: " + (err.response?.data?.error || "Invalid credentials"), "error");
     }
   };
 

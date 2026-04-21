@@ -7,11 +7,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
+import { useToast } from '../context/ToastContext';
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const { logout, user } = useUser();
+  const { showToast } = useToast();
   const [newEvent, setNewEvent] = useState({
     eventName: '',
     eventType: 'Flood',
@@ -40,9 +42,10 @@ const AdminDashboard = () => {
       setShowModal(false);
       fetchEvents();
       setNewEvent({ eventName: '', eventType: 'Flood', affectedLocation: '', startDate: '', endDate: '' });
+      showToast("Campaign created successfully!", "success");
     } catch (err) {
       console.error(err);
-      alert("Failed to create event: " + (err.response?.data?.message || err.response?.data?.error || err.message));
+      showToast("Failed to create event: " + (err.response?.data?.message || err.response?.data?.error || err.message), "error");
     }
   };
 
@@ -50,8 +53,9 @@ const AdminDashboard = () => {
     try {
       await EventAPI.updateStatus(id, newStatus);
       fetchEvents();
+      showToast("Status updated successfully", "success");
     } catch (err) {
-      alert("Failed to update status");
+      showToast("Failed to update status", "error");
     }
   };
 
@@ -170,7 +174,7 @@ const AdminDashboard = () => {
                     <td>
                       <button 
                         className="btn btn-ghost btn-sm" 
-                        onClick={() => alert(`Event: ${event.eventName}\nLocation: ${event.affectedLocation}\nType: ${event.eventType}\nStatus: ${event.eventStatus}`)}
+                        onClick={() => showToast(`Campaign: ${event.eventName} | Location: ${event.affectedLocation} | Type: ${event.eventType}`, "info")}
                       >
                         Details
                       </button>
@@ -258,6 +262,7 @@ const AdminDashboard = () => {
           color: #1e293b; 
           cursor: pointer;
           appearance: auto; /* Use standard browser appearance for stability */
+          min-width: 110px;
         }
         .status-select option {
           background: #ffffff;

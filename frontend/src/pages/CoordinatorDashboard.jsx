@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { ResourceAPI } from '../services/api';
 import { useUser } from '../context/UserContext';
+import { useToast } from '../context/ToastContext';
 import { Package, AlertCircle, CheckCircle, RefreshCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const CoordinatorDashboard = () => {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [inventory, setInventory] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
@@ -33,9 +35,9 @@ const CoordinatorDashboard = () => {
       await ResourceAPI.updateInventory(selectedItem, parseInt(quantity), user.id);
       setQuantity('');
       fetchData();
-      alert("Inventory updated successfully");
+      showToast("Inventory updated successfully", "success");
     } catch (err) {
-      alert("Update failed");
+      showToast("Update failed", "error");
     }
   };
 
